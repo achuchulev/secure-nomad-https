@@ -1,6 +1,6 @@
 # Example of Nomad cluster with NGINX as a reverse proxy, serving HTTPS encrypted traffic from client while getting the content via HTTP from Nomad backend
 
-## High Level Design
+## High Level Overview
 
 <img src="diagrams/nginx-reverse-proxy-nomad.png" />
 
