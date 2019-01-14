@@ -5,7 +5,7 @@ sudo systemctl stop nginx.service
 
 # remove default conf of nginx
 [ -f /etc/nginx/sites-available/default ] && {
-  rm -fr /etc/nginx/sites-available/default
+ sudo rm -fr /etc/nginx/sites-available/default
 }
 
 # copy our nginx conf
