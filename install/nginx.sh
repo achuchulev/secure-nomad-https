@@ -5,6 +5,6 @@
   
 which nginx || {
   echo No, nginx is not installed
-  apt-get update
-  apt-get install -y nginx
+  sudo apt-get update
+  sudo apt-get install -y nginx
   }
