@@ -1,4 +1,4 @@
-# Nomad cluster with NGINX as a reverse proxy, serving HTTPS encrypted traffic from client while getting the content via HTTP from Nomad backend
+## Nomad cluster with NGINX as a reverse proxy, serving HTTPS encrypted traffic from client while getting the content via HTTP from Nomad backend
 
 ## High Level Overview
 
@@ -66,4 +66,4 @@ $ nomad agent -config /vagrant/config/client1.hcl
 
 ### Access nomad web console
 
-[nomad web console](https://localhost:8443)
+[Go to nomad web console](https://localhost:8443)
