@@ -7,7 +7,8 @@ Vagrant.configure(2) do |config|
   config.vm.hostname = "nomad"
   config.vm.provision "shell", path: "install/tools.sh", privileged: false
   config.vm.provision "shell", path: "install/nomad.sh", privileged: false
-
+  config.vm.provision "shell", path: "install/cfssl.sh", privileged: false
+  
   # Expose the nomad api and ui to the host
   config.vm.network "forwarded_port", guest: 443, host: 8443, auto_correct: true
   
