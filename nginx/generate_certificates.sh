@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 sudo mkdir /etc/nginx/ssl
-sudo cd /etc/nginx/ssl
+cd /etc/nginx/ssl
 
 # Generate the CA's private key and certificate
 cfssl print-defaults csr | cfssl gencert -initca - | cfssljson -bare nginx-ca
