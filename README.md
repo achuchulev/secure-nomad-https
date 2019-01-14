@@ -46,7 +46,7 @@ vagrant up
 - `install/cfssl.sh` - to install cfssl
 - `install/nginx.sh` - to install nginx
 - `nginx/generate_certificates.sh` - to generate self-signed sertificate for nginx 
-- `nginx/configure.sh` - to copy nginx configuration
+- `nginx/configure.sh` - to copy nginx configuration that enables ssl
 
 ### Connect to vagrant box
 
