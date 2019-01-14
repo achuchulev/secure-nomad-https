@@ -9,7 +9,7 @@ systemctl stop nginx.service
 }
 
 # copy our nginx conf
-cp nginx.conf /etc/nginx/sites-available/default
+cp nginx/nginx.conf /etc/nginx/sites-available/default
 
 # start nginx service
 systemctl start nginx.service
