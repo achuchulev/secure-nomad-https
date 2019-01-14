@@ -58,12 +58,12 @@ vagrant ssh
 
 ```
 $ # In one terminal...
-$ nomad agent -config server1.hcl
+$ nomad agent -config /vagrant/config/server1.hcl
 
 $ # ...and in another
-$ nomad agent -config client1.hcl
+$ nomad agent -config /vagrant/config/client1.hcl
 ```
 
 ### Access nomad web console
 
-[https://localhost:8443](nomad web console)
+[nomad web console](https://localhost:8443)
