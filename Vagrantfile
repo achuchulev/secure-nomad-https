@@ -16,7 +16,7 @@ Vagrant.configure(2) do |config|
   
   
   # Expose the nomad api and ui to the host
-  config.vm.network "forwarded_port", guest: 443, host: 8443, auto_correct: true
+  config.vm.network "forwarded_port", guest: 443, host: 4443, auto_correct: true
   
   # Increase memory for Virtualbox
   config.vm.provider "virtualbox" do |vb|
