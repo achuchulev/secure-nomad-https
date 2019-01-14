@@ -17,3 +17,53 @@
 - Certificate management – Certificates only need to be purchased and installed on the proxy servers and not all backend servers.
 
 - Security patches – If vulnerabilities arise in the SSL/TLS stack, the appropriate patches need to be applied only to the proxy servers.
+
+### Pre-requisites
+
+- vagrant
+- virtualbox
+- git
+
+## How to run
+
+### Get the repo
+
+```
+https://github.com/achuchulev/secure-nomad-https.git
+cd secure-nomad-https
+```
+
+### Run vagrant box
+
+```
+vagrant up
+```
+
+`Vagrant up` will run scripts:
+
+- `install/tools.sh` - to install unzip, curl and vim if missing
+- `install/nomad.sh` - to install Nomad
+- `install/cfssl.sh` - to install cfssl
+- `install/nginx.sh` - to install nginx
+- `nginx/generate_certificates.sh` - to generate self-signed sertificate for nginx 
+- `nginx/configure.sh` - to copy nginx configuration
+
+### Connect to vagrant box
+
+```
+vagrant ssh
+```
+
+### Start Nomad server and client on the same machine
+
+```
+$ # In one terminal...
+$ nomad agent -config server1.hcl
+
+$ # ...and in another
+$ nomad agent -config client1.hcl
+```
+
+### Access nomad web console
+
+[https://localhost:8443](nomad web console)
