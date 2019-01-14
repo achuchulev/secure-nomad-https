@@ -12,11 +12,9 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", path: "install/nginx.sh", privileged: false
   config.vm.provision "shell", path: "nginx/generate_certificates.sh", privileged: false
   config.vm.provision "shell", path: "nginx/configure.sh", privileged: false
-  config.vm.provision "shell", path: "nomad/run.sh", privileged: false
-  
   
   # Expose the nomad api and ui to the host
-  config.vm.network "forwarded_port", guest: 443, host: 4443, auto_correct: true
+  config.vm.network "forwarded_port", guest: 443, host: 8443, auto_correct: true
   
   # Increase memory for Virtualbox
   config.vm.provider "virtualbox" do |vb|
