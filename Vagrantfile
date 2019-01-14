@@ -5,6 +5,7 @@ Vagrant.configure(2) do |config|
   config.vm.box = "achuchulev/xenial64"
   config.vm.box_version = "0.0.1"
   config.vm.hostname = "nomad"
+  config.vm.synced_folder ".", "/vagrant", disabled: false
   config.vm.provision "shell", path: "install/tools.sh", privileged: false
   config.vm.provision "shell", path: "install/nomad.sh", privileged: false
   config.vm.provision "shell", path: "install/cfssl.sh", privileged: false
