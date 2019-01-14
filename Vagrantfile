@@ -9,6 +9,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", path: "install/tools.sh", privileged: false
   config.vm.provision "shell", path: "install/nomad.sh", privileged: false
   config.vm.provision "shell", path: "install/cfssl.sh", privileged: false
+  config.vm.provision "shell", path: "install/nginx.sh", privileged: false
   config.vm.provision "shell", path: "nginx/generate_certificates.sh", privileged: false
   config.vm.provision "shell", path: "nginx/configure.sh", privileged: false
   config.vm.provision "shell", path: "nomad/run.sh", privileged: false
