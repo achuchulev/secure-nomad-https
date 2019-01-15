@@ -20,6 +20,17 @@ resource "aws_instance" "new_ec2" {
   }
 
   provisioner "file" {
+      source      = "config/"
+      destination = "~/:"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+    }
+  }  
+  
+  provisioner "file" {
       source      = "install/"
       destination = "/tmp"
 
