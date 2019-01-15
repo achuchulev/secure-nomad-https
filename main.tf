@@ -21,7 +21,7 @@ resource "aws_instance" "new_ec2" {
 
   provisioner "file" {
       source      = "config/"
-      destination = "~/:"
+      destination = "~/"
 
     connection {
       type        = "ssh"
