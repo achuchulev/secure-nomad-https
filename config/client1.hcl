@@ -16,3 +16,8 @@ client {
     # like Consul used for service discovery.
     servers = ["127.0.0.1:4647"]
 }
+
+# Modify our port to avoid a collision with server1
+ports {
+    http = 5656
+}
