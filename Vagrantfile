@@ -8,6 +8,7 @@ Vagrant.configure(2) do |config|
   config.vm.synced_folder ".", "/vagrant", disabled: false
   config.vm.provision "shell", path: "install/tools.sh", privileged: false
   config.vm.provision "shell", path: "install/nomad.sh", privileged: false
+  config.vm.provision "shell", path: "install/terraform.sh", privileged: false
   config.vm.provision "shell", path: "install/cfssl.sh", privileged: false
   config.vm.provision "shell", path: "install/nginx.sh", privileged: false
   config.vm.provision "shell", path: "nginx/generate_certificates.sh", privileged: false
