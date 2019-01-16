@@ -18,11 +18,17 @@
 
 - Security patches – If vulnerabilities arise in the SSL/TLS stack, the appropriate patches need to be applied only to the proxy servers.
 
-### Pre-requisites
+### Prerequisites
 
-- vagrant
-- virtualbox
-- git
+- Software
+  - vagrant
+  - virtualbox
+  - git
+
+- Environmental
+  - own or control the registered domain name for the certificate.
+  - create a DNS record that associates your domain name and your server’s public IP address.
+  - AWS subscription
 
 ## How to run
 
@@ -42,28 +48,59 @@ vagrant up
 `Vagrant up` will run scripts:
 
 - `install/tools.sh` - to install unzip, curl and vim if missing
-- `install/nomad.sh` - to install Nomad
-- `install/cfssl.sh` - to install cfssl
-- `install/nginx.sh` - to install nginx
-- `nginx/generate_certificates.sh` - to generate self-signed sertificate for nginx 
-- `nginx/configure.sh` - to copy nginx configuration that enables ssl
+- `install/terraform.sh` - to install Terraform
+
 
 ### Connect to vagrant box
 
 ```
 vagrant ssh
+cd /vagrant
+```
+
+### Deploy nginx and nomad instance
+
+- Create `terraform.tfvars` file
+
+```
+access_key = "your_aws_access_key"
+secret_key = "your_aws_secret_key"
+ami = "your_ami_id"
+instance_type = "t2.micro"
+subnet_id = "subnet_id"
+vpc_security_group_ids = ["security_group/s_id/s"]
+public_key = "your_public_key"
+```
+
+```
+Note: Security group in AWS should allow ssh on port 22 and https on port 443.
+```
+
+- Initialize terraform
+```
+terraform init
+```
+
+- Deploy nginx instance
+
+```
+terraform plan
+terraform apply
+```
+
+- ssh to instance
+
+```
+ssh username@public_ip
 ```
 
 ### Start Nomad server and client on the same machine
 
 ```
-$ # In one terminal...
-$ nomad agent -config /vagrant/config/server1.hcl
-
-$ # ...and in another
-$ nomad agent -config /vagrant/config/client1.hcl
+$ nomad agent -config server1.hcl &> /dev/null &
+$ nomad agent -config server1.hcl &> /dev/null &
 ```
 
 ### Access nomad web console
 
-[Go to nomad web console](https://localhost:8443)
+[Go to nomad web console](https://your_instance_dns)
