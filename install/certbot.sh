@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "Installing Certbot...."
+
 # install certbot tool
 sudo apt-get update
 sudo apt-get install software-properties-common -y
