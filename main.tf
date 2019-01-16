@@ -43,21 +43,22 @@ resource "aws_instance" "new_ec2" {
 
   provisioner "remote-exec" {
     inline = [
-      "sleep 120",
       "chmod +x /tmp/tools.sh",
-      "/tmp/tools.sh args",
-      "chmod +x /tmp/nomad.sh",
-      "/tmp/nomad.sh",
+      "/tmp/tools.sh",
       "chmod +x /tmp/nginx.sh",
       "/tmp/nginx.sh",
-      "chmod +x /tmp/configure_nginx.sh",
-      "/tmp/configure_nginx.sh",
-      "nomad agent -config server1.hcl &> /dev/null &",
-      "nomad agent -config client1.hcl &> /dev/null &",
+      "chmod +x /tmp/nomad.sh",
+      "/tmp/nomad.sh",
       "chmod +x /tmp/certbot.sh",
       "/tmp/certbot.sh",
+      "chmod +x /tmp/configure_nginx.sh",
+      "/tmp/configure_nginx.sh",
       "chmod +x /tmp/generate_certificate.sh",
       "/tmp/generate_certificate.sh",
+      "chmod +x /tmp/cron_job.sh",
+      "/tmp/cron_job.sh",
+      "chmod +x /tmp/run_nomad.sh",
+      "/tmp/run_nomad.sh",
     ]
 
     connection {
