@@ -20,15 +20,11 @@
 
 ### Prerequisites
 
-- Software
-  - vagrant
-  - virtualbox
-  - git
-
-- Environmental
-  - own or control the registered domain name for the certificate.
-  - create a DNS record that associates your domain name and your server’s public IP address.
-  - AWS subscription
+- git
+- terraform
+- own or control the registered domain name for the certificate.
+- create a DNS record that associates your domain name and your server’s public IP address.
+- AWS subscription
 
 ## How to run
 
@@ -38,26 +34,6 @@
 https://github.com/achuchulev/secure-nomad-https.git
 cd secure-nomad-https
 ```
-
-### Run vagrant box
-
-```
-vagrant up
-```
-
-`Vagrant up` will run scripts:
-
-- `install/tools.sh` - to install unzip, curl and vim if missing
-- `install/terraform.sh` - to install Terraform
-
-
-### Connect to vagrant box
-
-```
-vagrant ssh
-cd /vagrant
-```
-
 ### Deploy nginx and nomad instance
 
 - Create `terraform.tfvars` file
