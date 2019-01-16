@@ -68,5 +68,11 @@ resource "aws_instance" "new_ec2" {
   
   provisioner "remote-exec" {
     script = "${path.root}/scripts/run_nomad.sh"
+    
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+    }
   }
 }
