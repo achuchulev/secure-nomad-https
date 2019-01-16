@@ -57,8 +57,6 @@ resource "aws_instance" "new_ec2" {
       "/tmp/generate_certificate.sh",
       "chmod +x /tmp/cron_job.sh",
       "/tmp/cron_job.sh",
-      "chmod +x /tmp/run_nomad.sh",
-      "/tmp/run_nomad.sh",
     ]
 
     connection {
@@ -66,5 +64,9 @@ resource "aws_instance" "new_ec2" {
       user        = "ubuntu"
       private_key = "${file("~/.ssh/id_rsa")}"
     }
+  }
+  
+  provisioner "remote-exec" {
+    script = "${path.root}/scripts/run_nomad.sh"
   }
 }
