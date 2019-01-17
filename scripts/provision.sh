@@ -5,10 +5,10 @@ sudo systemctl stop apt-daily.service
 sudo systemctl stop apt-daily.timer
 sudo systemctl stop apt-daily-upgrade.timer
 sudo systemctl stop apt-daily-upgrade.service
-sudo systemctl disable apt-daily.service
-sudo systemctl disable apt-daily.timer
-sudo systemctl disable apt-daily-upgrade.timer
-sudo systemctl disable apt-daily-upgrade.service
+sudo fuser -vki /var/lib/dpkg/lock
+sudo fuser -vki /var/cache/apt/archives/lock
+sudo fuser -vki /var/cache/debconf/config.dat
+sudo dpkg --configure -a
 
 # Make sure apt repository db is up to date
 sudo apt-get update
@@ -58,8 +58,8 @@ sudo apt-get install python-certbot-nginx -y
 
 # Generate certificate
 echo "Generating SSL Certificate for nginx with Certbot...."
-EMAIL=atanas.v4@gmail.com
-DOMAIN_NAME=lab.ntry.site
+EMAIL=you@example.com
+DOMAIN_NAME=your.dns.name
 sudo certbot --nginx --non-interactive --agree-tos -m ${EMAIL} -d ${DOMAIN_NAME} --redirect
 
 # Create cron job
