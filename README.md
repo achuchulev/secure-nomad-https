@@ -79,19 +79,7 @@ terraform apply
   - install certbot
   - automatically enable HTTPS on website with EFF's Certbot, deploying Let's Encrypt certificate
   - check for certificate expiration and automatically renew Let’s Encrypt certificate
-
-- ssh to instance
-
-```
-ssh username@public_ip
-```
-
-- Start Nomad server and client in background on the same machine 
-
-```
-$ nomad agent -config server1.hcl &> /dev/null &
-$ nomad agent -config server1.hcl &> /dev/null &
-```
+  - start nomad server and client in background
 
 ### Access nomad web console
 
