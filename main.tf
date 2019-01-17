@@ -30,10 +30,9 @@ resource "aws_instance" "new_ec2" {
     }
   }
 
-  provisioner "file" {
-      source      = "install/"
-      destination = "/tmp"
-
+  provisioner "remote-exec" {
+    script = "${path.root}/scripts/provision.sh"
+    
     connection {
       type        = "ssh"
       user        = "ubuntu"
@@ -43,32 +42,10 @@ resource "aws_instance" "new_ec2" {
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /tmp/tools.sh",
-      "/tmp/tools.sh",
-      "chmod +x /tmp/nginx.sh",
-      "/tmp/nginx.sh",
-      "chmod +x /tmp/nomad.sh",
-      "/tmp/nomad.sh",
-      "chmod +x /tmp/certbot.sh",
-      "/tmp/certbot.sh",
-      "chmod +x /tmp/configure_nginx.sh",
-      "/tmp/configure_nginx.sh",
-      "chmod +x /tmp/generate_certificate.sh",
-      "/tmp/generate_certificate.sh",
-      "chmod +x /tmp/cron_job.sh",
-      "/tmp/cron_job.sh",
+      "nohup nomad agent -config ~/server1.hcl &> /dev/null &",
+      "nohup nomad agent -config ~/client1.hcl &> /dev/null &",
     ]
 
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = "${file("~/.ssh/id_rsa")}"
-    }
-  }
-  
-  provisioner "remote-exec" {
-    script = "${path.root}/scripts/run_nomad.sh"
-    
     connection {
       type        = "ssh"
       user        = "ubuntu"
