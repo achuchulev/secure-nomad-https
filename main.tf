@@ -20,8 +20,8 @@ resource "aws_instance" "new_ec2" {
   }
 
   provisioner "file" {
-      source      = "config/"
-      destination = "~/"
+    source      = "config/"
+    destination = "~/"
 
     connection {
       type        = "ssh"
@@ -32,7 +32,7 @@ resource "aws_instance" "new_ec2" {
 
   provisioner "remote-exec" {
     script = "${path.root}/scripts/provision.sh"
-    
+
     connection {
       type        = "ssh"
       user        = "ubuntu"
