@@ -44,6 +44,7 @@ resource "aws_instance" "new_ec2" {
     inline = [
       "nohup nomad agent -config ~/server1.hcl &> /dev/null &",
       "nohup nomad agent -config ~/client1.hcl &> /dev/null &",
+      "ps -ef | grep nomad"
     ]
 
     connection {
