@@ -79,6 +79,7 @@ terraform apply
   - install certbot
   - automatically enable HTTPS on website with EFF's Certbot, deploying Let's Encrypt certificate
   - check for certificate expiration and automatically renew Let’s Encrypt certificate
+  - start nomad server and client in background
 
 - ssh to instance
 
