@@ -28,13 +28,12 @@
 
 ## How to run
 
-### Get the repo
+- Get the repo
 
 ```
 https://github.com/achuchulev/secure-nomad-https.git
 cd secure-nomad-https
 ```
-### Deploy nginx and nomad instance
 
 - Create `terraform.tfvars` file
 
@@ -52,17 +51,34 @@ public_key = "your_public_key"
 Note: Security group in AWS should allow ssh on port 22 and https on port 443.
 ```
 
+- Edit script `scripts/provision` and set below variables:
+
+```
+EMAIL=your_email@example.com
+DOMAIN_NAME=your_instance_dns
+```
+
 - Initialize terraform
 ```
 terraform init
 ```
 
-- Deploy nginx instance
+- Deploy nginx and nomad instances
 
 ```
 terraform plan
 terraform apply
 ```
+
+- `Terraform apply` will:
+  - create new instance on AWS
+  - copy all configuration files from `config/` to user's home directory `~/`
+  - install nginx
+  - configure nginx
+  - install nomad
+  - install certbot
+  - automatically enable HTTPS on website with EFF's Certbot, deploying Let's Encrypt certificate
+  - check for certificate expiration and automatically renew Let’s Encrypt certificate
 
 - ssh to instance
 
@@ -70,7 +86,7 @@ terraform apply
 ssh username@public_ip
 ```
 
-### Start Nomad server and client on the same machine
+- Start Nomad server and client in background on the same machine 
 
 ```
 $ nomad agent -config server1.hcl &> /dev/null &
@@ -79,4 +95,4 @@ $ nomad agent -config server1.hcl &> /dev/null &
 
 ### Access nomad web console
 
-[Go to nomad web console](https://your_instance_dns)
+Open web browser and go to nomad web console using your dns name
