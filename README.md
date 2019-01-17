@@ -51,7 +51,7 @@ public_key = "your_public_key"
 Note: Security group in AWS should allow ssh on port 22 and https on port 443.
 ```
 
-- Edit script `scripts/provision` and set below variables:
+- Edit script `scripts/provision` and set below variables under section *Generate certificate*
 
 ```
 EMAIL=you@example.com
