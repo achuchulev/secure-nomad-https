@@ -54,8 +54,8 @@ Note: Security group in AWS should allow ssh on port 22 and https on port 443.
 - Edit script `scripts/provision` and set below variables:
 
 ```
-EMAIL=your_email@example.com
-DOMAIN_NAME=your_instance_dns
+EMAIL=you@example.com
+DOMAIN_NAME=your.dns.name
 ```
 
 - Initialize terraform
