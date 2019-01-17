@@ -81,19 +81,6 @@ terraform apply
   - check for certificate expiration and automatically renew Let’s Encrypt certificate
   - start nomad server and client in background
 
-- ssh to instance
-
-```
-ssh username@public_ip
-```
-
-- Start Nomad server and client in background on the same machine 
-
-```
-$ nomad agent -config server1.hcl &> /dev/null &
-$ nomad agent -config server1.hcl &> /dev/null &
-```
-
 ### Access nomad web console
 
 Open web browser and go to nomad web console using your dns name
