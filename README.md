@@ -45,7 +45,7 @@ ami = "your_ami_id"
 instance_type = "t2.micro"
 subnet_id = "subnet_id"
 vpc_security_group_ids = ["security_group/s_id/s"]
-public_key = "your_public_key"
+public_key = "your_public_ssh_key"
 ```
 
 ```
@@ -84,4 +84,4 @@ terraform apply
 
 ### Access nomad web console
 
-Open web browser and go to nomad web console using your dns name
+Open web browser, open nomad web console using your instance dns name for URL and verify that connection is secured and SSL certificate is valid
