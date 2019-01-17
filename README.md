@@ -84,4 +84,4 @@ terraform apply
 
 ### Access nomad web console
 
-Open web browser, open nomad web console using your instance dns name for URL and verify that connection is secured and SSL certificate is valid
+Open web browser, access nomad web console using your instance dns name for URL and verify that connection is secured and SSL certificate is valid
