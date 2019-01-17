@@ -22,9 +22,10 @@
 
 - git
 - terraform
-- own or control the registered domain name for the certificate.
-- create a DNS record that associates your domain name and your server’s public IP address.
+- own or control the registered domain name for the certificate
+- have a DNS record that associates your domain name and your server’s public IP address
 - AWS subscription
+- ssh key
 
 ## How to run
 
