@@ -41,6 +41,16 @@ resource "aws_instance" "new_ec2" {
   }
 
   provisioner "remote-exec" {
+    script = "${path.root}/scripts/disable_auto_apt.sh"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+    }
+  }
+  
+  provisioner "remote-exec" {
     inline = [
       "nohup nomad agent -config ~/server1.hcl &> /dev/null &",
       "nohup nomad agent -config ~/client1.hcl &> /dev/null &",

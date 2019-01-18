@@ -1,15 +1,5 @@
 #!/bin/bash
 
-# Stop services tha checking apt is up to date
-sudo systemctl stop apt-daily.service
-sudo systemctl stop apt-daily.timer
-sudo systemctl stop apt-daily-upgrade.timer
-sudo systemctl stop apt-daily-upgrade.service
-sudo fuser -vki /var/lib/dpkg/lock
-sudo fuser -vki /var/cache/apt/archives/lock
-sudo fuser -vki /var/cache/debconf/config.dat
-sudo dpkg --configure -a
-
 # Make sure apt repository db is up to date
 sudo apt-get update
 
