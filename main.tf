@@ -31,7 +31,15 @@ resource "aws_instance" "new_ec2" {
   }
 
   provisioner "remote-exec" {
-    script = "${path.root}/scripts/provision.sh"
+    scripts = [
+      "${path.root}/scripts/disable_auto_apt.sh",
+      "${path.root}/scripts/tools.sh",
+      "${path.root}/scripts/nginx.sh",
+      "${path.root}/scripts/nomad.sh",
+      "${path.root}/scripts/cfssl.sh",
+      "${path.root}/scripts/certbot.sh",
+      "${path.root}/scripts/generate_certificates.sh",
+    ]
 
     connection {
       type        = "ssh"
@@ -40,21 +48,11 @@ resource "aws_instance" "new_ec2" {
     }
   }
 
-  provisioner "remote-exec" {
-    script = "${path.root}/scripts/disable_auto_apt.sh"
-
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = "${file("~/.ssh/id_rsa")}"
-    }
-  }
-  
   provisioner "remote-exec" {
     inline = [
       "nohup nomad agent -config ~/server1.hcl &> /dev/null &",
       "nohup nomad agent -config ~/client1.hcl &> /dev/null &",
-      "ps -ef | grep nomad"
+      "ps -ef | grep nomad",
     ]
 
     connection {
