@@ -32,7 +32,7 @@ resource "aws_instance" "new_ec2" {
 
   provisioner "remote-exec" {
     scripts = [
-      "${path.root}/scripts/disable_auto_apt.sh",
+      #"${path.root}/scripts/disable_auto_apt.sh",
       "${path.root}/scripts/tools.sh",
       "${path.root}/scripts/nginx.sh",
       "${path.root}/scripts/nomad.sh",
@@ -50,8 +50,8 @@ resource "aws_instance" "new_ec2" {
 
   provisioner "remote-exec" {
     inline = [
-      "nohup nomad agent -config ~/server1.hcl &> /dev/null &",
-      "nohup nomad agent -config ~/client1.hcl &> /dev/null &",
+      "nohup nomad agent -config server1.hcl &> /dev/null &",
+      "nohup nomad agent -config client1.hcl &> /dev/null &",
       "ps -ef | grep nomad",
     ]
 
