@@ -32,7 +32,6 @@ resource "aws_instance" "new_ec2" {
 
   provisioner "remote-exec" {
     scripts = [
-      #"${path.root}/scripts/disable_auto_apt.sh",
       "${path.root}/scripts/tools.sh",
       "${path.root}/scripts/nginx.sh",
       "${path.root}/scripts/nomad.sh",
