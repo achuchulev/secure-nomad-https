@@ -4,6 +4,7 @@
 
 <img src="diagrams/nginx-reverse-proxy-nomad.png" />
 
+
 #### Securing Nomad's cluster communication is not only important for security but can even ease operations by preventing mistakes and misconfigurations. Nomad optionally uses mutual TLS (mTLS) for all HTTP and RPC communication. 
 
 #### Nomad's use of mTLS provides the following properties:
