@@ -38,14 +38,14 @@
 
 ## How to run
 
-- Get the repo
+### Get the repo
 
 ```
 https://github.com/achuchulev/secure-nomad-mtls.git
 cd secure-nomad-mtls
 ```
 
-- Create `terraform.tfvars` file
+### Create `terraform.tfvars` file
 
 ```
 access_key = "your_aws_access_key"
@@ -61,19 +61,19 @@ public_key = "your_public_ssh_key"
 Note: Security group in AWS should allow https on port 443.
 ```
 
-- Edit script `scripts/gen_trust_cert.sh` and set below variables
+### Edit script `scripts/gen_trust_cert.sh` and set below variables
 
 ```
 EMAIL=you@example.com
 DOMAIN_NAME=your.dns.name (that associates your domain name and your server’s public IP address)
 ```
 
-- Initialize terraform
+### Initialize terraform
 ```
 terraform init
 ```
 
-- Deploy nginx and nomad instances
+### Deploy nginx and nomad instances
 
 ```
 terraform plan
@@ -93,6 +93,30 @@ terraform apply
   - check for certificate expiration and automatically renew Let’s Encrypt certificate
   - start nomad server and client
   
+### Access Nomad
+
+- via CLI
+
+Nomad CLI defaults to communicating via HTTP instead of HTTPS. As Nomad CLI also searches environment variables for default values, the process can be simplified exporting environment variables like shown below:
+
+```
+$ export NOMAD_ADDR=https://your.dns.name
+```
+
+and then useing cli commands as usual will work fine.
+
+for example:
+
+```
+nomad node status
+```
+
+- via WEB UI console
+
+Open web browser, access nomad web console using your instance dns name for URL and verify that connection is secured and SSL certificate is valid  
+  
+## How to
+
 ### Create selfsigned certificates for Nomad cluster
 
 The first step to configuring TLS for Nomad is generating certificates. In order to prevent unauthorized cluster access, Nomad requires all certificates be signed by the same Certificate Authority (CA). This should be a private CA and not a public one as any certificate signed by this CA will be allowed to communicate with the cluster.
@@ -180,6 +204,8 @@ Each Nomad node should have the appropriate key (-key.pem) and certificate (.pem
 
 Nomad must be configured to use the newly-created key and certificates for (mutual) mTLS.
 
+#### server configuration
+
 Create (or download) server1.hcl configuration file
 
 ```
@@ -211,7 +237,7 @@ tls {
 }
 ```
 
-### Configure Nomad client
+#### client configuration
 
 Create (or download) client1.hcl configuration file
 
@@ -251,7 +277,7 @@ tls {
 }
 ```
 
-## Run Nomad with TLS
+### Run Nomad with TLS
 
 ```
 $ # In one terminal...
@@ -261,31 +287,9 @@ $ # ...and in another
 $ nomad agent -config /path/to/client1.hcl
 ```
 
-### Access Nomad
-
-#### via CLI
-
-Nomad CLI defaults to communicating via HTTP instead of HTTPS. As Nomad CLI also searches environment variables for default values, the process can be simplified exporting environment variables like shown below:
-
-```
-$ export NOMAD_ADDR=https://your.dns.name
-```
-
-and then useing cli commands as usual will work fine.
-
-for example:
-
-```
-nomad node status
-```
-
-#### via WEB UI console
-
-Open web browser, access nomad web console using your instance dns name for URL and verify that connection is secured and SSL certificate is valid
-
 ## Server Gossip
 
-At this point all of Nomad's RPC and HTTP communication is secured with mTLS. However, Nomad servers also communicate with a gossip protocol, Serf, that does not use TLS:
+At this point all of Nomad's RPC and HTTP communication is secured with mTLS. However, Nomad servers also communicate with a gossip protocol Serf, that does not use TLS:
 
 - *HTTP* - Used to communicate between CLI and Nomad agents. Secured by mTLS.
 - *RPC* - Used to communicate between Nomad agents. Secured by mTLS.
@@ -298,7 +302,7 @@ $ nomad operator keygen
 cg8StVXbQJ0gPvMd9o7yrg==
 ```
 
-Put the same generated key into every server's configuration file server.hcl or command line arguments:
+Put the same generated key into every server's configuration file server1.hcl or command line arguments:
 
 ```
 server {
