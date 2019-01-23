@@ -33,11 +33,12 @@ resource "aws_instance" "new_ec2" {
   provisioner "remote-exec" {
     scripts = [
       "${path.root}/scripts/tools.sh",
-      "${path.root}/scripts/nginx.sh",
       "${path.root}/scripts/nomad.sh",
       "${path.root}/scripts/cfssl.sh",
+      "${path.root}/scripts/gen_selfsigned_cert.sh",
+      "${path.root}/scripts/nginx.sh",
       "${path.root}/scripts/certbot.sh",
-      "${path.root}/scripts/generate_certificates.sh",
+      "${path.root}/scripts/gen_trust_cert.sh",
     ]
 
     connection {
