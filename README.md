@@ -287,6 +287,45 @@ $ # ...and in another
 $ nomad agent -config /path/to/client1.hcl
 ```
 
+### Setup nginx as a reverse-proxy and issue a trusted certificate for frontend
+
+#### Overwrite nginx default configuration within `/etc/nginx/sites-available/default` with the one below
+
+```
+server {
+
+    listen 80 default_server;
+    server_name localhost;
+
+    location / {
+
+        proxy_pass https://127.0.0.1:4646;
+        proxy_ssl_verify on;
+        proxy_ssl_trusted_certificate /path/to/nomad-ca.pem;
+        proxy_ssl_certificate /path/to/cli.pem;
+        proxy_ssl_certificate_key /path/to/cli-key.pem;
+        proxy_ssl_name server.global.nomad; 
+    }
+}
+```
+
+#### Enable HTTPS on nginx with EFF's Certbot automatically, deploying Let's Encrypt trusted certificate
+
+```
+# Specify your email and dns details here!
+EMAIL=you@email.com
+DOMAIN_NAME=your.dns.name
+sudo certbot --nginx --non-interactive --agree-tos -m ${EMAIL} -d ${DOMAIN_NAME} --redirect
+```
+
+#### Create cron job to check and renew public certificate on expiration
+
+```
+crontab <<EOF
+0 12 * * * /usr/bin/certbot renew --quiet
+EOF
+```
+
 ## Server Gossip
 
 At this point all of Nomad's RPC and HTTP communication is secured with mTLS. However, Nomad servers also communicate with a gossip protocol Serf, that does not use TLS:
