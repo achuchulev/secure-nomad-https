@@ -117,7 +117,7 @@ nomad node status
 
 Open web browser, access nomad web console using your instance dns name for URL and verify that connection is secured and SSL certificate is valid  
   
-## How to
+## How to in details
 
 ### Create selfsigned certificates for Nomad cluster
 
