@@ -1,15 +1,13 @@
 #!/bin/bash
 
+# Install nginx
 echo "Installing nginx...."
 
 # Check if nginx is installed
 # Install nginx if not installed
-which nginx || {
-  echo "Installing nginx...."
+which nginx &>/dev/null || {
   sudo apt-get install -y nginx
 }
-
-echo "Configuring nginx...."
 
 # Configure nginx
 echo "Configuring nginx...."
@@ -27,4 +25,3 @@ sudo cp ~/nginx.conf /etc/nginx/sites-available/default
 
 # Start nginx service
 sudo systemctl start nginx.service
-

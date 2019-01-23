@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Install cfssl, cfssl-certinfo and cfssljson
+echo "Installing cfssl suite...."
 
 cd /tmp/
 for bin in cfssl cfssl-certinfo cfssljson
