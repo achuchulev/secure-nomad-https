@@ -97,7 +97,7 @@ terraform apply
   
 ## Access Nomad
 
-- via CLI
+#### via CLI
 
 Nomad CLI defaults to communicating via HTTP instead of HTTPS. As Nomad CLI also searches environment variables for default values, the process can be simplified exporting environment variables like shown below:
 
@@ -113,7 +113,7 @@ for example:
 nomad node status
 ```
 
-- via WEB UI console
+#### via WEB UI console
 
 Open web browser, access nomad web console using your instance dns name for URL and verify that connection is secured and SSL certificate is valid  
   
@@ -128,7 +128,7 @@ Note!
       Nomad certificates may be signed by intermediate CAs as long as the root CA is the same. Append all intermediate CAs to the cert_file.
 ```
 
-- Certificate Authority
+#### Certificate Authority
 
 This guide will use *cfssl* for CA to generate a private CA certificate and key:
 
@@ -139,7 +139,7 @@ $ cfssl print-defaults csr | cfssl gencert -initca - | cfssljson -bare nomad-ca
 
 The CA key (nomad-ca-key.pem) will be used to sign certificates for Nomad nodes and must be kept private. The CA certificate (nomad-ca.pem) contains the public key necessary to validate Nomad certificates and therefore must be distributed to every node that requires access.
 
-- Node Certificates
+#### Node Certificates
 
 Nomad certificates are signed with their region and role such as:
 
@@ -164,7 +164,7 @@ Create (or download) the following configuration file as cfssl.json to increase 
 }
 ```
 
-- Generate a certificate for the Nomad server, client and CLI
+#### Generate a certificate for the Nomad server, client and CLI
 
 ```
 $ # Generate a certificate for the Nomad server
