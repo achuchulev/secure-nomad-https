@@ -39,14 +39,14 @@
 
 ## How to run
 
-### Get the repo
+- Get the repo
 
 ```
 https://github.com/achuchulev/secure-nomad-mtls.git
 cd secure-nomad-mtls
 ```
 
-### Create `terraform.tfvars` file
+- Create `terraform.tfvars` file
 
 ```
 access_key = "your_aws_access_key"
@@ -62,19 +62,20 @@ public_key = "your_public_ssh_key"
 Note: Security group in AWS should allow https on port 443.
 ```
 
-### Edit script `scripts/gen_trust_cert.sh` and set below variables
+- Edit script `scripts/gen_trust_cert.sh` and set below variables
 
 ```
 EMAIL=you@example.com
 DOMAIN_NAME=your.dns.name (that associates your domain name and your server’s public IP address)
 ```
 
-### Initialize terraform
+- Initialize terraform
+
 ```
 terraform init
 ```
 
-### Deploy nginx and nomad instances
+- Deploy nginx and nomad instances
 
 ```
 terraform plan
@@ -94,7 +95,7 @@ terraform apply
   - check for certificate expiration and automatically renew Let’s Encrypt certificate
   - start nomad server and client
   
-### Access Nomad
+## Access Nomad
 
 - via CLI
 
