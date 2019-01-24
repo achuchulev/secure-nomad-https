@@ -29,7 +29,7 @@ EOH
       }
 
       artifact {
-        source = "https://raw.githubusercontent.com/achuchulev/secure-nomad-mtls/achuchulev-patch-1/nomad_jobs/nginx.tpl"
+        source = "https://raw.githubusercontent.com/achuchulev/secure-nomad-mtls/master/nomad_jobs/nginx.tpl"
       }
 
       template {
