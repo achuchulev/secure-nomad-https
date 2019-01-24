@@ -108,9 +108,9 @@ and then useing cli commands as usual will work fine.
 for example:
 
 ```
-nomad node status
-nomad run nginx.nomad
-nomad status nginx
+$ nomad node status
+$ nomad run nginx.nomad
+$ nomad status nginx
 ```
 
 #### via WEB UI console
