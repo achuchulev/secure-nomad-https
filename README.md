@@ -279,7 +279,7 @@ tls {
 }
 ```
 
-### Run Nomad (in Dev mode) with mTLS
+### Run Nomad in dev mode with mTLS
 
 ```
 $ # In one terminal...
