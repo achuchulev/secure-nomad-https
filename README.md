@@ -52,7 +52,7 @@ cd secure-nomad-mtls
 ```
 access_key = "your_aws_access_key"
 secret_key = "your_aws_secret_key"
-ami = "ami-00c5e3f4a8dd369e8" # The official Ubuntu xenial 16.04 AMI
+ami = "ami-00c5e3f4a8dd369e8" # The official Ubuntu xenial 16.04 AMI for AWS region "us-east-2"
 instance_type = "instance_type"
 subnet_id = "subnet_id"
 vpc_security_group_ids = ["security_group/s_id/s"]
