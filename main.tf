@@ -30,6 +30,16 @@ resource "aws_instance" "new_ec2" {
     }
   }
 
+  provisioner "file" {
+    source      = "nomad_jobs/"
+    destination = "~/"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+    }
+  }
   provisioner "remote-exec" {
     scripts = [
       "${path.root}/scripts/tools.sh",
