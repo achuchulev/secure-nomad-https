@@ -31,8 +31,9 @@
 
 - git
 - terraform
-- own or control the registered domain name for the certificate
+- own or control the registered domain name for the certificate 
 - have a DNS record that associates your domain name and your server’s public IP address
+- Cloudflare subscription as it is used to manage DNS records automatically
 - AWS subscription
 - ssh key
 - Debian based AMI
@@ -56,17 +57,14 @@ instance_type = "instance_type"
 subnet_id = "subnet_id"
 vpc_security_group_ids = ["security_group/s_id/s"]
 public_key = "your_public_ssh_key"
+cloudflare_email = "you@example.com"
+cloudflare_token = "your_cloudflare_token"
+cloudflare_zone = "your.domain" # example: nomad.com
+subdomain_name = "subdomain_name" # example: lab
 ```
 
 ```
 Note: Security group in AWS should allow https on port 443.
-```
-
-- Edit script `scripts/gen_trust_cert.sh` and set below variables
-
-```
-EMAIL=you@example.com
-DOMAIN_NAME=your.dns.name (that associates your domain name and your server’s public IP address)
 ```
 
 - Initialize terraform
@@ -314,10 +312,7 @@ server {
 #### Enable HTTPS on nginx with EFF's Certbot automatically, deploying Let's Encrypt trusted certificate
 
 ```
-# Specify your email and dns details here!
-EMAIL=you@email.com
-DOMAIN_NAME=your.dns.name
-sudo certbot --nginx --non-interactive --agree-tos -m ${EMAIL} -d ${DOMAIN_NAME} --redirect
+sudo certbot --nginx --non-interactive --agree-tos -m ${var.cloudflare_email} -d ${var.subdomain_name}.${var.cloudflare_zone} --redirect
 ```
 
 #### Create cron job to check and renew public certificate on expiration
