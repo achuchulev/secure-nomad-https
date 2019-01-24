@@ -109,6 +109,8 @@ for example:
 
 ```
 nomad node status
+nomad run nginx.nomad
+nomad status nginx
 ```
 
 #### via WEB UI console
