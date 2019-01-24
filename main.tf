@@ -40,6 +40,7 @@ resource "aws_instance" "new_ec2" {
       private_key = "${file("~/.ssh/id_rsa")}"
     }
   }
+
   provisioner "remote-exec" {
     scripts = [
       "${path.root}/scripts/tools.sh",
