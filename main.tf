@@ -38,7 +38,7 @@ resource "aws_instance" "new_ec2" {
       "${path.root}/scripts/gen_selfsigned_cert.sh",
       "${path.root}/scripts/nginx.sh",
       "${path.root}/scripts/certbot.sh",
-      "${path.root}/scripts/gen_trust_cert.sh",
+      "${path.root}/scripts/cron_create.sh",
     ]
 
     connection {
@@ -57,6 +57,34 @@ resource "aws_instance" "new_ec2" {
 
     connection {
       type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+    }
+  }
+}
+
+# Configure the Cloudflare provider
+provider "cloudflare" {
+  email = "${var.cloudflare_email}"
+  token = "${var.cloudflare_token}"
+}
+
+# Create a record
+resource "cloudflare_record" "nginx_nomad" {
+  domain = "${var.cloudflare_zone}"
+  name   = "${var.subdomain_name}"
+  value  = "${aws_instance.new_ec2.public_ip}"
+  type   = "A"
+  ttl    = 3600
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo certbot --nginx --non-interactive --agree-tos -m ${var.cloudflare_email} -d ${var.subdomain_name}.${var.cloudflare_zone} --redirect",
+    ]
+
+    connection {
+      type        = "ssh"
+      host        = "${aws_instance.new_ec2.public_ip}"
       user        = "ubuntu"
       private_key = "${file("~/.ssh/id_rsa")}"
     }
