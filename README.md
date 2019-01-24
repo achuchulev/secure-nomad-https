@@ -9,11 +9,10 @@
 
 #### Nomad's use of mTLS provides the following properties:
 
-- Benefits
-  - Prevent unauthorized Nomad access
-  - Prevent observing or tampering with Nomad communication
-  - Prevent client/server role or region misconfigurations
-  - Prevent other services from masquerading as Nomad agents
+- Prevent unauthorized Nomad access
+- Prevent observing or tampering with Nomad communication
+- Prevent client/server role or region misconfigurations
+- Prevent other services from masquerading as Nomad agents
 
 #### There are a number of advantages of doing decryption at the proxy:
 
