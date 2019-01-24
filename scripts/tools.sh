@@ -10,7 +10,7 @@ sudo apt-get update
 sudo apt-get install unzip curl vim -y
 
 # Install Docker required for Nomad docker driver
-sudo apt-get install --no-install-recommends -y docker.io
+sudo apt-get install docker.io -y
 sudo usermod -G docker -a ubuntu
 
 # Check that docker is working

@@ -2,7 +2,7 @@ job "nginx" {
   datacenters = ["dc1"]
   type = "service"
   group "cache" {
-    count = 3
+    count = 1
     task "nginx" {
       driver = "docker"
       config {
