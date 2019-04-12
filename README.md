@@ -51,14 +51,14 @@ cd secure-nomad-mtls
 ```
 access_key = "your_aws_access_key"
 secret_key = "your_aws_secret_key"
-ami = "ami-00c5e3f4a8dd369e8" # The official Ubuntu xenial 16.04 AMI for AWS region "us-east-2"
+ami = "some_aws_ami_id" # Debian based AMI like Ubuntu Xenial or Bionic
 instance_type = "instance_type"
 subnet_id = "subnet_id"
 vpc_security_group_ids = ["security_group/s_id/s"]
 public_key = "your_public_ssh_key"
-cloudflare_email = "you@example.com"
+cloudflare_email = "you@email.com"
 cloudflare_token = "your_cloudflare_token"
-cloudflare_zone = "your.domain" # example: nomad.com
+cloudflare_zone = "your.domain" # example: nomadlab.com
 subdomain_name = "subdomain_name" # example: lab
 ```
 
