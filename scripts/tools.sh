@@ -4,6 +4,7 @@
 echo "Installing tools..."
 
 # Make sure apt repository db is up to date
+export DEBIAN_FRONTEND=noninteractive
 sudo apt-get update
 
 # Packages required for nomad & consul

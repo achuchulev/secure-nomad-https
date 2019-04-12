@@ -1,11 +1,11 @@
 output "public_ip" {
-  value = "${aws_instance.new_ec2.public_ip}"
+  value = "${module.nomad_instance_dev.public_ip}"
 }
 
 output "public_dns" {
-  value = "${aws_instance.new_ec2.public_dns}"
+  value = "${module.nomad_instance_dev.public_dns}"
 }
 
 output "tags" {
-  value = "${aws_instance.new_ec2.tags}"
+  value = "${module.nomad_instance_dev.tags}"
 }
