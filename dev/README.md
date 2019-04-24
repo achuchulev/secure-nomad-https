@@ -15,7 +15,7 @@
 
 ```
 https://github.com/achuchulev/secure-nomad-mtls.git
-cd secure-nomad-mtls
+cd secure-nomad-mtls/dev
 ```
 
 - Create `terraform.tfvars` file
