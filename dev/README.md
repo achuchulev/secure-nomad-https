@@ -88,7 +88,7 @@ $ nomad status nginx
 
 Open web browser, access nomad web console using your instance dns name for URL and verify that connection is secured and SSL certificate is valid  
   
-## How to in details
+## Config details
 
 ### Create selfsigned certificates for Nomad cluster
 
