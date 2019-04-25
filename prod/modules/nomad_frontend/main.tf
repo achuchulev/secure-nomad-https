@@ -18,7 +18,7 @@ resource "aws_instance" "nginx_instance" {
   key_name               = "${aws_key_pair.my_key.id}"
 
   tags {
-    Name = "${var.dc}-${module.random_name.name}-frontend"
+    Name = "${var.frontend_region}-${var.dc}-${module.random_name.name}-frontend"
   }
 
   provisioner "remote-exec" {
@@ -38,8 +38,9 @@ resource "aws_instance" "nginx_instance" {
 resource "null_resource" "nginx_config" {
   # Changes to any server instance of the nomad cluster requires re-provisioning
   triggers = {
-    backend_instance_ips = "${jsonencode(var.backend_private_ips)}"
-    cloudflare_record    = "${cloudflare_record.nomad_frontend.value}"
+    backend_instance_ips   = "${jsonencode(var.backend_private_ips)}"
+    cloudflare_record_ip   = "${cloudflare_record.nomad_frontend.value}"
+    cloudflare_record_name = "${cloudflare_record.nomad_frontend.name}"
   }
 
   depends_on = ["aws_instance.nginx_instance"]

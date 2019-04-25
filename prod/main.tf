@@ -38,6 +38,7 @@ module "nomad_frontend" {
 
   region                 = "${var.region}"
   availability_zone      = "${var.availability_zone}"
+  frontend_region        = "${var.nomad_region}"
   dc                     = "${var.datacenter}"
   access_key             = "${var.access_key}"
   secret_key             = "${var.secret_key}"

@@ -67,7 +67,7 @@ resource "aws_instance" "new_instance" {
   key_name               = "${aws_key_pair.my_key.id}"
 
   tags {
-    Name       = "${var.dc}-${module.random_name.name}-${var.instance_role}-0${count.index + 1}"
+    Name       = "${var.nomad_region}-${var.dc}-${module.random_name.name}-${var.instance_role}-0${count.index + 1}"
     nomad-node = "${var.instance_role}"
   }
 
