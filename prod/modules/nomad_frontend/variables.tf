@@ -32,3 +32,7 @@ variable "dc" {
   type    = "string"
   default = "dc1"
 }
+
+variable "frontend_region" {
+  type = "string"
+}
