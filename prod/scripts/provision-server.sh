@@ -43,23 +43,23 @@ cat <<EOF >/etc/nomad.d/nomad.hcl
 
 data_dir  = "/opt/nomad"
 
-region = "$4"
+region = "$1"
 
-datacenter = "$3"
+datacenter = "$2"
 
 bind_addr = "0.0.0.0"
 
 # advertise {
-#   #rpc = "{{ GetInterfaceIP \"eth0\" }}"
+#   rpc = "{{ GetPublicIP }}"
 #   serf = "{{ GetPublicIP }}"
 # }
 
 server {
   enabled = true
   bootstrap_expect = 3
-  authoritative_region = "$5"
+  authoritative_region = "$3"
   server_join {
-    retry_join = ["provider=aws tag_key=$1 tag_value=$2"]
+    retry_join = ["$4"]
     retry_max = 5
     retry_interval = "15s"
   }

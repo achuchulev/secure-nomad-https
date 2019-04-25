@@ -16,6 +16,10 @@ variable "region" {
   default = "us-east-2"
 }
 
+variable "availability_zone" {
+  default = "us-east-2b"
+}
+
 variable "ami" {}
 variable "instance_type" {}
 variable "subnet_id" {}
@@ -42,4 +46,9 @@ variable "nomad_region" {
 variable "authoritative_region" {
   type    = "string"
   default = "global"
+}
+
+variable "retry_join" {
+  description = "Used by Nomad to automatically form a cluster."
+  default     = "provider=aws tag_key=nomad-node tag_value=server"
 }

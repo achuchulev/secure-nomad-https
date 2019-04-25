@@ -1,7 +1,9 @@
+// Generates random name for instances
 module "random_name" {
-  source = "github.com/achuchulev/module-random_pet"
+  source = "../random_pet"
 }
 
+// Generates AWS key pairs for instances
 resource "aws_key_pair" "my_key" {
   key_name   = "key-${module.random_name.name}"
   public_key = "${var.public_key}"
@@ -51,10 +53,13 @@ resource "aws_iam_instance_profile" "nomad" {
   role = "${aws_iam_role.nomad.name}"
 }
 
+// Creates AWS EC2 instances for nomad server/client
 resource "aws_instance" "new_instance" {
   count         = "${var.nomad_instance_count}"
   ami           = "${var.ami}"
   instance_type = "${var.instance_type}"
+
+  availability_zone = "${var.availability_zone}"
 
   subnet_id              = "${var.subnet_id}"
   vpc_security_group_ids = ["${var.vpc_security_group_ids}"]
@@ -91,7 +96,7 @@ resource "aws_instance" "new_instance" {
   provisioner "remote-exec" {
     inline = [
       "sudo chmod +x /tmp/provision.sh",
-      "sudo /tmp/provision.sh nomad-node server ${var.dc} ${var.nomad_region} ${var.authoritative_region}",
+      "sudo /tmp/provision.sh ${var.nomad_region} ${var.dc} ${var.authoritative_region} '${var.retry_join}'",
       "sudo cp /tmp/nomad.service /etc/systemd/system",
       "sudo systemctl enable nomad.service",
       "sudo systemctl start nomad.service",
