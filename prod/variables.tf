@@ -1,9 +1,11 @@
 variable "servers_count" {
-  default = "3"
+  description = "The number of servers to provision."
+  default     = "3"
 }
 
 variable "clients_count" {
-  default = "3"
+  description = "The number of clients to provision."
+  default     = "3"
 }
 
 variable "access_key" {}
@@ -15,6 +17,10 @@ variable "public_key" {}
 
 variable "region" {
   default = "us-east-2"
+}
+
+variable "availability_zone" {
+  default = "us-east-2b"
 }
 
 variable "ami" {}

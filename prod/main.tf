@@ -2,6 +2,7 @@ module "nomad_server" {
   source = "modules/nomad_instance"
 
   region                 = "${var.region}"
+  availability_zone      = "${var.availability_zone}"
   dc                     = "${var.datacenter}"
   nomad_region           = "${var.nomad_region}"
   nomad_instance_count   = "${var.servers_count}"
@@ -18,6 +19,7 @@ module "nomad_client" {
   source = "modules/nomad_instance"
 
   region                 = "${var.region}"
+  availability_zone      = "${var.availability_zone}"
   dc                     = "${var.datacenter}"
   nomad_region           = "${var.nomad_region}"
   instance_role          = "${var.instance_role}"
@@ -35,6 +37,7 @@ module "nomad_frontend" {
   source = "modules/nomad_frontend"
 
   region                 = "${var.region}"
+  availability_zone      = "${var.availability_zone}"
   dc                     = "${var.datacenter}"
   access_key             = "${var.access_key}"
   secret_key             = "${var.secret_key}"

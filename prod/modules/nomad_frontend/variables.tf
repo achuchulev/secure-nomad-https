@@ -7,6 +7,10 @@ variable "region" {
   default = "us-east-2"
 }
 
+variable "availability_zone" {
+  default = "us-east-2b"
+}
+
 variable "ami" {}
 variable "instance_type" {}
 variable "subnet_id" {}
