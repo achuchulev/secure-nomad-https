@@ -2,6 +2,8 @@ variable "nomad_instance_count" {
   default = "3"
 }
 
+variable "nomad_version" {}
+
 variable "access_key" {}
 variable "secret_key" {}
 
@@ -52,3 +54,7 @@ variable "retry_join" {
   description = "Used by Nomad to automatically form a cluster."
   default     = "provider=aws tag_key=nomad-node tag_value=server"
 }
+
+variable "zone_name" {}
+
+variable "domain_name" {}
