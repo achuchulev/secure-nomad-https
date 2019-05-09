@@ -7,3 +7,7 @@
 
 # .tfvars files
 *.tfvars
+
+# cert files
+*.pem
+*.csr
