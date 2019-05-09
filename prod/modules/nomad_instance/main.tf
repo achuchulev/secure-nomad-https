@@ -150,7 +150,7 @@ resource "aws_instance" "new_instance" {
       "sudo systemctl enable nomad.service",
       "sudo systemctl start nomad.service",
       "sudo rm -rf /tmp/*",
-      "export NOMAD_ADDR=https://'${var.domain_name}'.'${var.zone_name}'",
+      "echo 'export NOMAD_ADDR=https://${var.domain_name}.${var.zone_name}' >> ~/.profile",
     ]
 
     connection {
