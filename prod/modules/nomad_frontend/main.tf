@@ -1,12 +1,15 @@
+// Generates random name for instances
 module "random_name" {
   source = "../random_pet"
 }
 
+// Generates AWS key pairs for instances
 resource "aws_key_pair" "my_key" {
   key_name   = "key-${module.random_name.name}"
   public_key = "${var.public_key}"
 }
 
+// Creates AWS EC2 instance for nomad frontend server
 resource "aws_instance" "nginx_instance" {
   ami           = "${var.ami}"
   instance_type = "${var.instance_type}"
@@ -18,13 +21,37 @@ resource "aws_instance" "nginx_instance" {
   key_name               = "${aws_key_pair.my_key.id}"
 
   tags {
-    Name = "${var.dc}-${module.random_name.name}-frontend"
+    Name = "${var.frontend_region}-${var.dc}-${module.random_name.name}-frontend"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "mkdir -p ~/nomad/ssl",
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+    }
+  }
+
+  provisioner "file" {
+    source      = "${path.root}/ssl/nomad/${var.nomad_region}/"
+    destination = "nomad/ssl"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+    }
   }
 
   provisioner "remote-exec" {
     scripts = [
       "${path.root}/scripts/certbot.sh",
       "${path.root}/scripts/cron_create.sh",
+      "${path.root}/scripts/cfssl.sh",
     ]
 
     connection {
@@ -35,11 +62,13 @@ resource "aws_instance" "nginx_instance" {
   }
 }
 
+# This makes the nginx configuration 
 resource "null_resource" "nginx_config" {
-  # Changes to any server instance of the nomad cluster requires re-provisioning
+  # changes to any server instance of the nomad cluster requires re-provisioning
   triggers = {
-    backend_instance_ips = "${jsonencode(var.backend_private_ips)}"
-    cloudflare_record    = "${cloudflare_record.nomad_frontend.value}"
+    backend_instance_ips   = "${jsonencode(var.backend_private_ips)}"
+    cloudflare_record_ip   = "${cloudflare_record.nomad_frontend.value}"
+    cloudflare_record_name = "${cloudflare_record.nomad_frontend.name}"
   }
 
   depends_on = ["aws_instance.nginx_instance"]
@@ -61,10 +90,11 @@ resource "null_resource" "nginx_config" {
   provisioner "remote-exec" {
     # script called with private_ips of nomad backend servers
     inline = [
+      "sudo echo '{}' | cfssl gencert -ca=nomad/ssl/nomad-ca.pem -ca-key=nomad/ssl/nomad-ca-key.pem -profile=client - | cfssljson -bare nomad/ssl/cli",
       "chmod +x /tmp/nginx.sh",
-      "sudo /tmp/nginx.sh",
-      "export IN=${replace(jsonencode(var.backend_private_ips), ",", "")}",                           #search for and remove commas
-      "OUT=$(echo $IN | tr -d '[]')",                                                                 #remove square brackets
+      "sudo /tmp/nginx.sh ${var.nomad_region}",
+      "export IN=${replace(jsonencode(var.backend_private_ips), ",", "")}",                                                                             # here we search for and remove commas
+      "OUT=$(echo $IN | tr -d '[]')",                                                                                                                   # here we remove square brackets
       "export OUT",
       "sudo -E bash -c 'echo upstream nomad_backend { $OUT } >> /etc/nginx/sites-available/default'",
       "sudo systemctl start nginx.service",
@@ -73,7 +103,7 @@ resource "null_resource" "nginx_config" {
   }
 }
 
-# Create a record
+# Creates a DNS record with Cloudflare
 resource "cloudflare_record" "nomad_frontend" {
   domain = "${var.cloudflare_zone}"
   name   = "${var.subdomain_name}"
@@ -82,6 +112,7 @@ resource "cloudflare_record" "nomad_frontend" {
   ttl    = 3600
 }
 
+# Generates a trusted certificate issued by Let's Encrypt
 resource "null_resource" "certbot" {
   # Changes to any instance of the cluster requires re-provisioning
   triggers = {

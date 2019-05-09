@@ -1,3 +1,7 @@
+variable "nomad_version" {
+  description = "Specifies the version of Nomad to use."
+}
+
 variable "servers_count" {
   description = "The number of servers to provision."
   default     = "3"
@@ -6,6 +10,24 @@ variable "servers_count" {
 variable "clients_count" {
   description = "The number of clients to provision."
   default     = "3"
+}
+
+variable "datacenter" {
+  description = "The name of Nomad datacenter."
+  type        = "string"
+  default     = "dc1"
+}
+
+variable "nomad_region" {
+  description = "The name of Nomad region."
+  type        = "string"
+  default     = "global"
+}
+
+variable "authoritative_region" {
+  description = "Points the Nomad's authoritative region."
+  type        = "string"
+  default     = "global"
 }
 
 variable "access_key" {}
@@ -35,18 +57,3 @@ variable "cloudflare_email" {}
 variable "cloudflare_token" {}
 variable "cloudflare_zone" {}
 variable "subdomain_name" {}
-
-variable "datacenter" {
-  type    = "string"
-  default = "dc1"
-}
-
-variable "nomad_region" {
-  type    = "string"
-  default = "global"
-}
-
-variable "authoritative_region" {
-  type    = "string"
-  default = "global"
-}

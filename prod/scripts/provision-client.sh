@@ -3,7 +3,7 @@
 # Install nomad
 echo "Installing Nomad..."
 
-NOMAD_VERSION=0.9.0
+NOMAD_VERSION=$5
 
 systemctl stop apt-daily.service
 systemctl kill --kill-who=all apt-daily.service
@@ -75,5 +75,18 @@ client {
   options = {
     "driver.whitelist" = ""
   }
+}
+
+# Require TLS
+tls {
+  http = true
+  rpc  = true
+
+  ca_file   = "/home/ubuntu/nomad/ssl/nomad-ca.pem"
+  cert_file = "/home/ubuntu/nomad/ssl/client.pem"
+  key_file  = "/home/ubuntu/nomad/ssl/client-key.pem"
+
+  verify_server_hostname = true
+  verify_https_client    = true
 }
 EOF

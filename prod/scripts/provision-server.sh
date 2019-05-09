@@ -3,7 +3,7 @@
 # Install nomad
 echo "Installing Nomad..."
 
-NOMAD_VERSION=0.9.0
+NOMAD_VERSION=$5
 
 systemctl stop apt-daily.service
 systemctl kill --kill-who=all apt-daily.service
@@ -49,11 +49,6 @@ datacenter = "$2"
 
 bind_addr = "0.0.0.0"
 
-# advertise {
-#   rpc = "{{ GetPublicIP }}"
-#   serf = "{{ GetPublicIP }}"
-# }
-
 server {
   enabled = true
   bootstrap_expect = 3
@@ -63,5 +58,18 @@ server {
     retry_max = 5
     retry_interval = "15s"
   }
+}
+
+# Require TLS
+tls {
+  http = true
+  rpc  = true
+
+  ca_file   = "/home/ubuntu/nomad/ssl/nomad-ca.pem"
+  cert_file = "/home/ubuntu/nomad/ssl/server.pem"
+  key_file  = "/home/ubuntu/nomad/ssl/server-key.pem"
+
+  verify_server_hostname = true
+  verify_https_client    = true
 }
 EOF

@@ -47,7 +47,7 @@ resource "aws_iam_role_policy" "nomad" {
   policy = "${data.aws_iam_policy_document.nomad.json}"
 }
 
-// This will provides an IAM instance profile.
+// Provides an IAM instance profile
 resource "aws_iam_instance_profile" "nomad" {
   name = "${var.nomad_region}-${var.dc}-${var.role_name}-${var.instance_role}"
   role = "${aws_iam_role.nomad.name}"
@@ -67,8 +67,53 @@ resource "aws_instance" "new_instance" {
   key_name               = "${aws_key_pair.my_key.id}"
 
   tags {
-    Name       = "${var.dc}-${module.random_name.name}-${var.instance_role}-0${count.index + 1}"
+    Name       = "${var.nomad_region}-${var.dc}-${module.random_name.name}-${var.instance_role}-0${count.index + 1}"
     nomad-node = "${var.instance_role}"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "mkdir -p ~/nomad/ssl",
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+    }
+  }
+
+  provisioner "file" {
+    source      = "${path.root}/ssl/nomad/${var.nomad_region}/"
+    destination = "nomad/ssl"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+    }
+  }
+
+  provisioner "file" {
+    source      = "${path.root}/config/cfssl.json"
+    destination = "/tmp/cfssl.json"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+    }
+  }
+
+  provisioner "file" {
+    source      = "${path.root}/scripts/cfssl.sh"
+    destination = "/tmp/cfssl.sh"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${file("~/.ssh/id_rsa")}"
+    }
   }
 
   provisioner "file" {
@@ -95,12 +140,17 @@ resource "aws_instance" "new_instance" {
 
   provisioner "remote-exec" {
     inline = [
+      "sudo chmod +x /tmp/cfssl.sh",
+      "sudo /tmp/cfssl.sh",
+      "sudo echo '{}' | cfssl gencert -ca=nomad/ssl/nomad-ca.pem -ca-key=nomad/ssl/nomad-ca-key.pem -config=/tmp/cfssl.json -hostname='${var.instance_role}.${var.nomad_region}.nomad,localhost,127.0.0.1' - | cfssljson -bare nomad/ssl/${var.instance_role}",
+      "sudo echo '{}' | cfssl gencert -ca=nomad/ssl/nomad-ca.pem -ca-key=nomad/ssl/nomad-ca-key.pem -profile=client - | cfssljson -bare nomad/ssl/cli",
       "sudo chmod +x /tmp/provision.sh",
-      "sudo /tmp/provision.sh ${var.nomad_region} ${var.dc} ${var.authoritative_region} '${var.retry_join}'",
+      "sudo /tmp/provision.sh ${var.nomad_region} ${var.dc} ${var.authoritative_region} '${var.retry_join}' '${var.nomad_version}'",
       "sudo cp /tmp/nomad.service /etc/systemd/system",
       "sudo systemctl enable nomad.service",
       "sudo systemctl start nomad.service",
       "sudo rm -rf /tmp/*",
+      "export NOMAD_ADDR=https://'${var.domain_name}'.'${var.zone_name}'",
     ]
 
     connection {
