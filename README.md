@@ -39,59 +39,11 @@
 
 ## How to run
 
-- Get the repo
+[DEV](https://github.com/achuchulev/secure-nomad-mtls/tree/master/dev)
 
-```
-https://github.com/achuchulev/secure-nomad-mtls.git
-cd secure-nomad-mtls
-```
+[PROD](https://github.com/achuchulev/secure-nomad-mtls/tree/master/dev)
 
-- Create `terraform.tfvars` file
 
-```
-access_key = "your_aws_access_key"
-secret_key = "your_aws_secret_key"
-ami = "some_aws_ami_id" # Debian based AMI like Ubuntu Xenial or Bionic
-instance_type = "instance_type"
-subnet_id = "subnet_id"
-vpc_security_group_ids = ["security_group/s_id/s"]
-public_key = "your_public_ssh_key"
-cloudflare_email = "you@email.com"
-cloudflare_token = "your_cloudflare_token"
-cloudflare_zone = "your.domain" # example: nomadlab.com
-subdomain_name = "subdomain_name" # example: lab
-```
-
-```
-Note: Security group in AWS should allow https on port 443.
-```
-
-- Initialize terraform
-
-```
-terraform init
-```
-
-- Deploy nginx and nomad instances
-
-```
-terraform plan
-terraform apply
-```
-
-- `Terraform apply` will:
-  - create new instance on AWS
-  - copy all configuration files from `config/` to user's home directory `~/`
-  - install nomad
-  - install cfssl (Cloudflare's PKI and TLS toolkit)
-  - generate the selfsigned certificates for Nomad cluster 
-  - install nginx
-  - configure nginx
-  - install certbot
-  - automatically enable HTTPS on website with EFF's Certbot, deploying Let's Encrypt certificate
-  - check for certificate expiration and automatically renew Let’s Encrypt certificate
-  - start nomad server and client
-  
 ## Access Nomad
 
 #### via CLI
@@ -116,7 +68,7 @@ $ nomad status nginx
 
 Open web browser, access nomad web console using your instance dns name for URL and verify that connection is secured and SSL certificate is valid  
   
-## How to in details
+## How to secure
 
 ### Create selfsigned certificates for Nomad cluster
 
@@ -205,65 +157,9 @@ Each Nomad node should have the appropriate key (-key.pem) and certificate (.pem
 
 Nomad must be configured to use the newly-created key and certificates for (mutual) mTLS.
 
-#### server configuration
-
-Create (or download) server1.hcl configuration file
+Add the tls stanza below to enable TLS configuration. This enables TLS communication between all servers and clients using the default system CA bundle and certificates.
 
 ```
-# Increase log verbosity
-log_level = "DEBUG"
-
-# Setup data dir
-data_dir = "/tmp/server1"
-
-# Enable the server
-server {
-  enabled = true
-
-  # Self-elect, should be 3 or 5 for production
-  bootstrap_expect = 1
-}
-
-# Require TLS
-tls {
-  http = true
-  rpc  = true
-
-  ca_file   = "/path/to/nomad-ca.pem"
-  cert_file = "/path/to/server.pem"
-  key_file  = "/path/to/server-key.pem"
-
-  verify_server_hostname = true
-  verify_https_client    = true
-}
-```
-
-#### client configuration
-
-Create (or download) client1.hcl configuration file
-
-```
-# Increase log verbosity
-log_level = "DEBUG"
-
-# Setup data dir
-data_dir = "/tmp/client1"
-
-# Enable the client
-client {
-  enabled = true
-
-  # For demo assume we are talking to server1. For production,
-  # this should be like "nomad.service.consul:4647" and a system
-  # like Consul used for service discovery.
-  servers = ["127.0.0.1:4647"]
-}
-
-# Modify our port to avoid a collision with server1
-ports {
-  http = 5656
-}
-
 # Require TLS
 tls {
   http = true
@@ -278,38 +174,10 @@ tls {
 }
 ```
 
-### Run Nomad in dev mode with mTLS
+### Configuration of nginx as a reverse-proxy and issue a trusted certificate for frontend
 
-```
-$ # In one terminal...
-$ nomad agent -config /path/to/server1.hcl
-
-$ # ...and in another
-$ nomad agent -config /path/to/client1.hcl
-```
-
-### Setup nginx as a reverse-proxy and issue a trusted certificate for frontend
-
-#### Overwrite nginx default configuration within `/etc/nginx/sites-available/default` with the one below
-
-```
-server {
-
-    listen 80 default_server;
-    server_name localhost;
-
-    location / {
-
-        proxy_pass https://127.0.0.1:4646;
-        proxy_ssl_verify on;
-        proxy_ssl_trusted_certificate /path/to/nomad-ca.pem;
-        proxy_ssl_certificate /path/to/cli.pem;
-        proxy_ssl_certificate_key /path/to/cli-key.pem;
-        proxy_ssl_name server.global.nomad; 
-    }
-}
-```
-
+Overwrite nginx default configuration within `/etc/nginx/sites-available/default` 
+ 
 #### Enable HTTPS on nginx with EFF's Certbot automatically, deploying Let's Encrypt trusted certificate
 
 ```
