@@ -43,31 +43,6 @@
 
 [PROD](https://github.com/achuchulev/secure-nomad-mtls/tree/master/dev)
 
-
-## Access Nomad
-
-#### via CLI
-
-Nomad CLI defaults to communicating via HTTP instead of HTTPS. As Nomad CLI also searches environment variables for default values, the process can be simplified exporting environment variables like shown below:
-
-```
-$ export NOMAD_ADDR=https://your.dns.name
-```
-
-and then useing cli commands as usual will work fine.
-
-for example:
-
-```
-$ nomad node status
-$ nomad run nginx.nomad
-$ nomad status nginx
-```
-
-#### via WEB UI console
-
-Open web browser, access nomad web console using your instance dns name for URL and verify that connection is secured and SSL certificate is valid  
-  
 ## How to secure
 
 ### Create selfsigned certificates for Nomad cluster
