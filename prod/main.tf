@@ -1,11 +1,10 @@
-# Resource that invoke a script that generetes root certificate of local CA
 resource "null_resource" "generate_self_ca" {
   provisioner "local-exec" {
+    # script called with private_ips of nomad backend servers
     command = "${path.root}/scripts/gen_self_ca.sh ${var.nomad_region}"
   }
 }
 
-# Resource to generate encryption key for securing nomad server gossip traffic
 resource "random_id" "server_gossip" {
   byte_length = 16
 }

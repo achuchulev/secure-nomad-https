@@ -58,7 +58,7 @@ server {
     retry_max = 5
     retry_interval = "15s"
   }
-  
+
   encrypt = "$6"
 }
 
