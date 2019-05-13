@@ -55,6 +55,11 @@ variable "retry_join" {
   default     = "provider=aws tag_key=nomad-node tag_value=server"
 }
 
+variable "secure_gossip" {
+  description = "Used by Nomad to enable gossip encryption"
+  default     = "null"
+}
+
 variable "zone_name" {}
 
 variable "domain_name" {}
