@@ -145,7 +145,7 @@ resource "aws_instance" "new_instance" {
       "sudo echo '{}' | cfssl gencert -ca=nomad/ssl/nomad-ca.pem -ca-key=nomad/ssl/nomad-ca-key.pem -config=/tmp/cfssl.json -hostname='${var.instance_role}.${var.nomad_region}.nomad,localhost,127.0.0.1' - | cfssljson -bare nomad/ssl/${var.instance_role}",
       "sudo echo '{}' | cfssl gencert -ca=nomad/ssl/nomad-ca.pem -ca-key=nomad/ssl/nomad-ca-key.pem -profile=client - | cfssljson -bare nomad/ssl/cli",
       "sudo chmod +x /tmp/provision.sh",
-      "sudo /tmp/provision.sh ${var.nomad_region} ${var.dc} ${var.authoritative_region} '${var.retry_join}' '${var.nomad_version}'",
+      "sudo /tmp/provision.sh ${var.nomad_region} ${var.dc} ${var.authoritative_region} '${var.retry_join}' '${var.nomad_version}' ${var.secure_gossip}",
       "sudo cp /tmp/nomad.service /etc/systemd/system",
       "sudo systemctl enable nomad.service",
       "sudo systemctl start nomad.service",
