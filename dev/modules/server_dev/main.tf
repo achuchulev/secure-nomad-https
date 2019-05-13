@@ -31,7 +31,7 @@ resource "aws_instance" "new_ec2" {
   }
 
   provisioner "file" {
-    source      = "${path.root}/nomad_jobs/"
+    source      = "../nomad_jobs/"
     destination = "~/"
 
     connection {
