@@ -207,7 +207,7 @@ $ nomad operator keygen
 cg8StVXbQJ0gPvMd9o7yrg==
 ```
 
-Put the same generated key into every server's configuration file server1.hcl or command line arguments:
+Put the same generated key into every server's configuration file:
 
 ```
 server {
