@@ -26,7 +26,7 @@
 
 - Security patches – If vulnerabilities arise in the SSL/TLS stack, the appropriate patches need to be applied only to the proxy servers.
 
-### Prerequisites
+## Prerequisites
 
 - git
 - terraform
