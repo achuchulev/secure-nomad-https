@@ -64,6 +64,36 @@ terraform apply
   - check for certificate expiration and automatically renew Let’s Encrypt certificate
   - start nomad server and client
   
+  
+### Secure server gossip communication
+
+At this point all of Nomad's RPC and HTTP communication is secured with mTLS. However, Nomad servers also communicate with a gossip protocol Serf, that does not use TLS:
+
+- *HTTP* - Used to communicate between CLI and Nomad agents. Secured by mTLS.
+- *RPC* - Used to communicate between Nomad agents. Secured by mTLS.
+- *Serf* - Used to communicate between Nomad servers. Secured by a shared key.
+
+The Nomad CLI includes a _operator keygen_ command for generating a new secure gossip encryption key
+
+```
+$ nomad operator keygen
+cg8StVXbQJ0gPvMd9o7yrg==
+```
+
+Put the same generated key into every server's configuration file server1.hcl or command line arguments:
+
+```
+server {
+  enabled = true
+
+  # Self-elect, should be 3 or 5 for production
+  bootstrap_expect = 1
+
+  # Encrypt gossip communication
+  encrypt = "cg8StVXbQJ0gPvMd9o7yrg=="
+}
+```
+
 ## Access Nomad
 
 #### via CLI
