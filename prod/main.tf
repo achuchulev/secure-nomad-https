@@ -25,6 +25,7 @@ module "nomad_server" {
   vpc_security_group_ids = ["${var.vpc_security_group_ids}"]
   domain_name            = "${var.subdomain_name}"
   zone_name              = "${var.cloudflare_zone}"
+  secure_gossip          = "${random_id.server_gossip.b64_std}"
 }
 
 # Module that creates Nomad client instances
