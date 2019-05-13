@@ -10,6 +10,8 @@ server {
 
     # Self-elect, should be 3 or 5 for production
     bootstrap_expect = 1
+    
+    encrypt = "cg8StVXbQJ0gPvMd9o7yrg=="
 }
 
 # Require TLS
