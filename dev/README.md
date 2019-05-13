@@ -65,7 +65,7 @@ terraform apply
   - start nomad server and client
   
   
-### Secure server gossip communication
+#### Secure server gossip traffic
 
 At this point all of Nomad's RPC and HTTP communication is secured with mTLS. However, Nomad servers also communicate with a gossip protocol Serf, that does not use TLS:
 
@@ -80,7 +80,7 @@ $ nomad operator keygen
 cg8StVXbQJ0gPvMd9o7yrg==
 ```
 
-Put the same generated key into every server's configuration file server1.hcl or command line arguments:
+To enable encrypted gossip traffic update server's configuration file `server1.hcl` located in user's home directory like shown below, kill ruuning nomad server process and start it again with command `nohup nomad agent -config server1.hcl &> /dev/null &`
 
 ```
 server {
