@@ -37,6 +37,10 @@
 - ssh key
 - Debian based AMI
 
+## To DO
+
+- to add the steps for `ec2:DescribeInstances` IAM policy creation needed for nomad auto join
+
 ## How to run
 
 [DEV](https://github.com/achuchulev/secure-nomad-mtls/tree/master/dev)
